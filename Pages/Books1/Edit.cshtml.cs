@@ -44,7 +44,7 @@ namespace Rusu_Nicola_Lab2.Pages.Books
             }
 
             Book = book;
-PopulateAssignedCategoryData(_context, Book);
+            PopulateAssignedCategoryData(_context, Book);
 
             var authorList = _context.Authors.Select(x => new
             {

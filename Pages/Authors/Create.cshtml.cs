@@ -25,7 +25,7 @@ namespace Rusu_Nicola_Lab2.Pages.Author
         }
 
         [BindProperty]
-        public Authors Authors { get; set; } = default!;
+        public Models.Author Authors { get; set; } = default!;
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()

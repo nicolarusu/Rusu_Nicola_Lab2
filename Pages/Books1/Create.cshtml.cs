@@ -57,7 +57,7 @@ namespace Rusu_Nicola_Lab2.Pages.Books
             _context.Book.Add(Book);
             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
-        } 
+        }
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
