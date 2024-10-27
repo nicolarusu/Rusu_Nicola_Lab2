@@ -8,17 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using Rusu_Nicola_Lab2.Data;
 using Rusu_Nicola_Lab2.Models;
 
-namespace Rusu_Nicola_Lab2.Pages.Books
+namespace Rusu_Nicola_Lab2.Pages.Categories
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly Rusu_Nicola_Lab2.Data.Rusu_Nicola_Lab2Context _context;
 
-        public DetailsModel(Rusu_Nicola_Lab2.Data.Rusu_Nicola_Lab2Context context)
+        public DeleteModel(Rusu_Nicola_Lab2.Data.Rusu_Nicola_Lab2Context context)
         {
             _context = context;
         }
 
+        [BindProperty]
         public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -28,12 +29,8 @@ namespace Rusu_Nicola_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .Include(b => b.Author)
-                .Include(b => b.Publisher)
-                .Include(b => b.BookCategories)
-                .ThenInclude(b => b.Category)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+
             if (book == null)
             {
                 return NotFound();
@@ -43,6 +40,24 @@ namespace Rusu_Nicola_Lab2.Pages.Books
                 Book = book;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.FindAsync(id);
+            if (book != null)
+            {
+                Book = book;
+                _context.Book.Remove(Book);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Index");
         }
     }
 }

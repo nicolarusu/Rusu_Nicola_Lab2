@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Rusu_Nicola_Lab2.Data;
 using Rusu_Nicola_Lab2.Models;
 
-namespace Rusu_Nicola_Lab2.Pages.Author
+namespace Rusu_Nicola_Lab2.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace Rusu_Nicola_Lab2.Pages.Author
             _context = context;
         }
 
-        public Authors Authors { get; set; } = default!;
+        public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,14 +28,14 @@ namespace Rusu_Nicola_Lab2.Pages.Author
                 return NotFound();
             }
 
-            var authors = await _context.Authors.FirstOrDefaultAsync(m => m.ID == id);
-            if (authors == null)
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            if (book == null)
             {
                 return NotFound();
             }
             else
             {
-                Authors = authors;
+                Book = book;
             }
             return Page();
         }

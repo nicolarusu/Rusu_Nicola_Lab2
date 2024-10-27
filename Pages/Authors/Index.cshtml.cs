@@ -19,7 +19,7 @@ namespace Rusu_Nicola_Lab2.Pages.Author
             _context = context;
         }
 
-        public IList<Authors> Authors { get;set; } = default!;
+        public IList<Models.Author> Authors { get;set; } = default!;
 
         public async Task OnGetAsync()
         {

@@ -20,7 +20,7 @@ namespace Rusu_Nicola_Lab2.Pages.Author
         }
 
         [BindProperty]
-        public Authors Authors { get; set; } = default!;
+        public Models.Author Authors { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

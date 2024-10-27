@@ -7,6 +7,8 @@
 
 <h1>Details</h1>
 
+<h1>Details</h1>
+
 <div>
     <h4>Book</h4>
     <hr />
@@ -17,8 +19,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Book.Title)
         </dd>
-  
-       
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Book.Price)
         </dt>
@@ -31,8 +31,42 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Book.PublishingDate)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model=>model.Book.BookCategories)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Authors")
+        <dd class="col-sm-10">
+                @if (Model.Book.Author != null)
+                {
+                <span>@Model.Book.Author.FirstName @Model.Book.Author.LastName</span>
+                }
+                else
+                {
+                <span> </span>
+                }
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayName("Categories")
+        </dt>
+        <dd class="col-sm-10">
+                @if (Model.Book.BookCategories != null && Model.Book.BookCategories.Any())
+                {
+                    foreach (var bookCategory in Model.Book.BookCategories)
+                    {
+                    <span>@bookCategory.Category.CategoryName</span>
+
+                    <br />
+                    }
+                }
+                else
+                {
+                <span> </span>
+                }
+        </dd>
     </dl>
 </div>
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Book.ID">Edit</a> |
     <a asp-page="./Index">Back to List</a>
