@@ -19,13 +19,11 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
             _context = context;
         }
 
-        public IList<Book> Book { get;set; } = default!;
+        public IList<Category> Category { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Book = await _context.Book
-                .Include(b => b.Author)
-                .Include(b => b.Publisher).ToListAsync();
+            Category = await _context.Category.ToListAsync();
         }
     }
 }

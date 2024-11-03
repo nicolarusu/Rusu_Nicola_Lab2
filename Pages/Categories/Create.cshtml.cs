@@ -21,13 +21,11 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
 
         public IActionResult OnGet()
         {
-        ViewData["AuthorID"] = new SelectList(_context.Authors, "ID", "ID");
-        ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID", "ID");
             return Page();
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -37,7 +35,7 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
                 return Page();
             }
 
-            _context.Book.Add(Book);
+            _context.Category.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

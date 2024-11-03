@@ -21,7 +21,7 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,14 +30,12 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
                 return NotFound();
             }
 
-            var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-            if (book == null)
+            var category =  await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
             }
-            Book = book;
-           ViewData["AuthorID"] = new SelectList(_context.Authors, "ID", "ID");
-           ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID", "ID");
+            Category = category;
             return Page();
         }
 
@@ -50,7 +48,7 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
                 return Page();
             }
 
-            _context.Attach(Book).State = EntityState.Modified;
+            _context.Attach(Category).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +56,7 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BookExists(Book.ID))
+                if (!CategoryExists(Category.ID))
                 {
                     return NotFound();
                 }
@@ -71,9 +69,9 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
             return RedirectToPage("./Index");
         }
 
-        private bool BookExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Book.Any(e => e.ID == id);
+            return _context.Category.Any(e => e.ID == id);
         }
     }
 }
