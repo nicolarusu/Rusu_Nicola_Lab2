@@ -1,37 +1,61 @@
-﻿@page
-@model Rusu_Nicola_Lab2.Pages.Categories.IndexModel
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Rusu_Nicola_Lab2.Data;
+using Rusu_Nicola_Lab2.Models;
 
-@{
-    ViewData["Title"] = "Index";
-}
+namespace Rusu_Nicola_Lab2.Pages.Categories
+{
+    public class IndexModel : PageModel
+    {
+        private readonly Rusu_Nicola_Lab2Context _context;
 
-<h1>Index</h1>
+        public IndexModel(Rusu_Nicola_Lab2Context context)
+        {
+            _context = context;
+        }
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Category[0].CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Category) {
-        <tr>
+        public CategoryData CategoryData { get; set; } = new CategoryData(); // Define CategoryData
+        public int? CategoryID { get; set; } // Define CategoryID as nullable to handle no selection
 
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        public async Task OnGetAsync(int? id)
+        {
+            // Fetch categories along with their related books
+            CategoryData.Categories = await _context.Category
+                .Include(c => c.BookCategories)
+                    .ThenInclude(bc => bc.Book)
+                .AsNoTracking()
+                .ToListAsync();
+
+            // If a category ID is passed, select the relevant books
+            if (id != null)
+            {
+                CategoryID = id.Value;
+                var selectedCategory = CategoryData.Categories
+                    .SingleOrDefault(c => c.ID == id.Value);
+
+                // Retrieve books for the selected category
+                if (selectedCategory != null)
+                {
+                    CategoryData.Books = selectedCategory.BookCategories
+                        .Select(bc => bc.Book)
+                        .ToList();
+                }
+            }
+        }
+    }
+
+    public class CategoryData
+    {
+        public List<Category>
+    Categories { get; set; } = new List<Category>
+        ();
+        public List<Book>
+            Books { get; set; } = new List<Book>
+                ();
+                }
+                }
