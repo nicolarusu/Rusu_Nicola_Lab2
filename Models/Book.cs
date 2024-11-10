@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Rusu_Nicola_Lab2.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
 
@@ -15,6 +16,7 @@ namespace Rusu_Nicola_Lab2.Models
         public DateTime PublishingDate { get; set; }
         public int? PublisherID { get; set; }
         public Publisher? Publisher { get; set; }
+        public ICollection<Borrowing>?Borrowings { get; set; }
         public int? AuthorID { get; set; }
         public Author? Author { get; set; }
         public ICollection<BookCategory>? BookCategories { get; set; }
