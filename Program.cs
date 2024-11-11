@@ -5,9 +5,23 @@ using Rusu_Nicola_Lab2.Data; // Replace with your actual namespace for Rusu_Nico
 using Rusu_Nicola_Lab2.Models; // Replace with the actual namespace for LibraryIdentityContext
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+   policy.RequireRole("Admin"));
+});
+
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Books");
+    options.Conventions.AllowAnonymousToPage("/Books/Index");
+    options.Conventions.AllowAnonymousToPage("/Books/Details");
+    options.Conventions.AuthorizeFolder("/Members", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/Publishers", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/Categories", "AdminPolicy");
+});
 
 // Configure the main application DbContext (Rusu_Nicola_Lab2Context)
 builder.Services.AddDbContext<Rusu_Nicola_Lab2Context>(options =>
@@ -27,6 +41,7 @@ builder.Services.AddDbContext<LibraryIdentityContext>(options =>
 // Configure Identity services
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LibraryIdentityContext>();
 
 var app = builder.Build();

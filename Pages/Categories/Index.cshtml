@@ -19,26 +19,23 @@ namespace Rusu_Nicola_Lab2.Pages.Categories
             _context = context;
         }
 
-        public CategoryData CategoryData { get; set; } = new CategoryData(); // Define CategoryData
-        public int? CategoryID { get; set; } // Define CategoryID as nullable to handle no selection
+        public CategoryData CategoryData { get; set; } = new CategoryData();
+        public int? CategoryID { get; set; }
 
         public async Task OnGetAsync(int? id)
         {
-            // Fetch categories along with their related books
             CategoryData.Categories = await _context.Category
                 .Include(c => c.BookCategories)
                     .ThenInclude(bc => bc.Book)
                 .AsNoTracking()
                 .ToListAsync();
 
-            // If a category ID is passed, select the relevant books
             if (id != null)
             {
                 CategoryID = id.Value;
                 var selectedCategory = CategoryData.Categories
                     .SingleOrDefault(c => c.ID == id.Value);
 
-                // Retrieve books for the selected category
                 if (selectedCategory != null)
                 {
                     CategoryData.Books = selectedCategory.BookCategories
